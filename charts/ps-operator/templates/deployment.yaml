@@ -78,3 +78,19 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{- if or .Values.watchNamespace .Values.watchAllNamespaces }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: percona-ps-operator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    name: percona-ps-operator
+spec:
+  ports:
+    - port: 443
+      targetPort: 9443
+  selector:
+    app.kubernetes.io/name: {{ include "ps-operator.name" . }}
+{{- end }}

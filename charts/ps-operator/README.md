@@ -41,6 +41,7 @@ The chart can be customized using the following configurable parameters:
 | `disableTelemetry`      | Disable sending PS Operator telemetry data to Percona                                          | `false`                                 |
 | `watchNamespace`        | Set this variable if the target cluster namespace differs from operator's namespace            | `.Release.Namespace`                    |
 | `watchAllNamespaces`    | Set if operator should be deployed in cluster-wide mode                                        | `false`                                 |
+| `createNamespace`       | Create the watched namespace(s)                                                                | `false`                                 |
 
 
 Specify parameters using `--set key=value[,key=value]` argument to `helm install`
