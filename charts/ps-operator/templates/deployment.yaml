@@ -32,10 +32,12 @@ spec:
         - name: LOG_LEVEL
           value: "{{ .Values.env.logLevel }}"
         - name: WATCH_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
+          {{- if .Values.watchAllNamespaces }}
+          value: ""
+          {{- else }}
+          value: "{{ default .Release.Namespace .Values.watchNamespace }}"
+          {{- end }}
+
         - name: DISABLE_TELEMETRY
           value: "{{ .Values.disableTelemetry }}"
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -73,3 +75,19 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{- if or .Values.watchNamespace .Values.watchAllNamespaces }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: percona-ps-operator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    name: percona-ps-operator
+spec:
+  ports:
+    - port: 443
+      targetPort: 9443
+  selector:
+    app.kubernetes.io/name: {{ include "ps-operator.name" . }}
+{{- end }}
