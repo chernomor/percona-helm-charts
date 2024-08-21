@@ -401,6 +401,14 @@ spec:
 {{ tpl ($orc.resources.requests | toYaml) $ | indent 8 }}
       limits:
 {{ tpl ($orc.resources.limits | toYaml) $ | indent 8 }}
+    {{- if $orc.livenessProbe }}
+    livenessProbe:
+{{ $orc.livenessProbe | toYaml | indent 6 }}
+    {{- end }}
+    {{- if $orc.readinessProbe }}
+    readinessProbe:
+{{ $orc.readinessProbe | toYaml | indent 6 }}
+    {{- end }}
     {{- if $orc.volumeSpec }}
     volumeSpec:
       {{- if $orc.volumeSpec.hostPath }}
