@@ -128,7 +128,7 @@ spec:
       {{- if $mysql.volumeSpec.hostPath }}
       hostPath:
         path: {{ $mysql.volumeSpec.hostPath }}
-        type: {{ $mysql.volumeSpec.HostType | default "Directory" }}
+        type: {{ $mysql.volumeSpec.hostType | default "Directory" }}
       {{- else if $mysql.volumeSpec.pvc }}
       persistentVolumeClaim:
 {{ $mysql.volumeSpec.pvc | toYaml | indent 8 }}
